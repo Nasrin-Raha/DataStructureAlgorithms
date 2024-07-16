@@ -1,0 +1,107 @@
+class DoublyNode:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        
+    def insert_at_beginning(self, data):
+        new_node = DoublyNode(data)
+        if not self.head:
+            self.head = self.tail = new_node
+            return
+        new_node.next = self.head
+        self.head.prev = new_node
+        self.head = new_node
+        
+    def insert_at_end(self, data):
+        new_node = DoublyNode(data)
+        if not self.head:
+            self.head = self.tail = new_node
+            return
+        self.tail.next = new_node
+        new_node.prev = self.tail
+        self.tail = new_node
+        
+    def delete_node(self, key):
+        current = self.head
+        while current:
+            if current.data == key:
+                if current.prev:
+                    current.prev.next = current.next
+                else:
+                    self.head = current.next
+                if current.next:
+                    current.next.prev = current.prev
+                else:
+                    self.tail = current.prev
+                current = None
+                return
+            current = current.next
+            
+    def search(self, key):
+        current = self.head
+        while current:
+            if current.data == key:
+                return True
+            current = current.next
+        return False
+            
+    def traverse_forward(self):
+        elements = []
+        current = self.head
+        while current:
+            elements.append(current.data)
+            current = current.next
+        return elements
+        
+    def traverse_backward(self):
+        elements = []
+        current = self.tail
+        while current:
+            elements.append(current.data)
+            current = current.prev
+        return elements
+
+# Test cases
+def test_doubly_linked_list():
+    dll = DoublyLinkedList()
+    
+    # Test insert_at_beginning
+    dll.insert_at_beginning(3)
+    dll.insert_at_beginning(2)
+    dll.insert_at_beginning(1)
+    assert dll.traverse_forward() == [1, 2, 3], f"Expected [1, 2, 3] but got {dll.traverse_forward()}"
+    assert dll.traverse_backward() == [3, 2, 1], f"Expected [3, 2, 1] but got {dll.traverse_backward()}"
+    
+    # Test insert_at_end
+    dll.insert_at_end(4)
+    dll.insert_at_end(5)
+    assert dll.traverse_forward() == [1, 2, 3, 4, 5], f"Expected [1, 2, 3, 4, 5] but got {dll.traverse_forward()}"
+    assert dll.traverse_backward() == [5, 4, 3, 2, 1], f"Expected [5, 4, 3, 2, 1] but got {dll.traverse_backward()}"
+    
+    # Test delete_node
+    dll.delete_node(1)  # Delete head
+    assert dll.traverse_forward() == [2, 3, 4, 5], f"Expected [2, 3, 4, 5] but got {dll.traverse_forward()}"
+    assert dll.traverse_backward() == [5, 4, 3, 2], f"Expected [5, 4, 3, 2] but got {dll.traverse_backward()}"
+    
+    dll.delete_node(3)  # Delete middle node
+    assert dll.traverse_forward() == [2, 4, 5], f"Expected [2, 4, 5] but got {dll.traverse_forward()}"
+    assert dll.traverse_backward() == [5, 4, 2], f"Expected [5, 4, 2] but got {dll.traverse_backward()}"
+    
+    dll.delete_node(5)  # Delete last node
+    assert dll.traverse_forward() == [2, 4], f"Expected [2, 4] but got {dll.traverse_forward()}"
+    assert dll.traverse_backward() == [4, 2], f"Expected [4, 2] but got {dll.traverse_backward()}"
+    
+    # Test search
+    assert dll.search(2) == True, f"Expected True but got {dll.search(2)}"
+    assert dll.search(3) == False, f"Expected False but got {dll.search(3)}"
+    
+    print("All test cases pass")
+
+# Run test cases
+test_doubly_linked_list()
