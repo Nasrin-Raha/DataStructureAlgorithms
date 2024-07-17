@@ -1,0 +1,113 @@
+class CircularNode:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class CircularLinkedList:
+    def __init__(self):
+        self.head = None
+    
+    def insert_at_beginning(self, data):
+        new_node = CircularNode(data)
+        if not self.head:
+            self.head = new_node
+            new_node.next = new_node
+        else:
+            new_node.next = self.head
+            current = self.head
+            while current.next != self.head:
+                current = current.next
+            current.next = new_node
+            self.head = new_node
+        
+    def insert_at_end(self, data):
+        new_node = CircularNode(data)
+        if not self.head:
+            self.head = new_node
+            new_node.next = new_node
+        else:
+            current = self.head
+            while current.next != self.head:
+                current = current.next
+            current.next = new_node
+            new_node.next = self.head
+            
+    def delete_node(self, key):
+        if not self.head:
+            return
+        if self.head.data == key:
+            if self.head.next == self.head:
+                self.head = None
+                return
+            current = self.head
+            while current.next != self.head:
+                current = current.next
+            current.next = self.head.next
+            self.head = self.head.next
+            return
+        current = self.head
+        prev = None
+        while current.next != self.head and current.data != key:
+            prev = current
+            current = current.next
+        if current.data == key:
+            prev.next = current.next
+            current = None
+            
+    def search(self, key):
+        if not self.head:
+            return False
+        current = self.head
+        while True:
+            if current.data == key:
+                return True
+            current = current.next
+            if current == self.head:
+                break
+        return False
+            
+    def traverse(self):
+        elements = []
+        if not self.head:
+            return elements
+        current = self.head
+        while True:
+            elements.append(current.data)
+            current = current.next
+            if current == self.head:
+                break
+        return elements
+
+# Test cases
+def test_circular_linked_list():
+    cll = CircularLinkedList()
+    
+    # Test insert_at_beginning
+    cll.insert_at_beginning(3)
+    cll.insert_at_beginning(2)
+    cll.insert_at_beginning(1)
+    assert cll.traverse() == [1, 2, 3], f"Expected [1, 2, 3] but got {cll.traverse()}"
+    
+    # Test insert_at_end
+    cll.insert_at_end(4)
+    cll.insert_at_end(5)
+    assert cll.traverse() == [1, 2, 3, 4, 5], f"Expected [1, 2, 3, 4, 5] but got {cll.traverse()}"
+    
+    # Test delete_node
+    cll.delete_node(1)  # Delete head
+    assert cll.traverse() == [2, 3, 4, 5], f"Expected [2, 3, 4, 5] but got {cll.traverse()}"
+    
+    cll.delete_node(3)  # Delete middle node
+    assert cll.traverse() == [2, 4, 5], f"Expected [2, 4, 5] but got {cll.traverse()}"
+    
+    cll.delete_node(5)  # Delete last node
+    assert cll.traverse() == [2, 4], f"Expected [2, 4] but got {cll.traverse()}"
+    
+    # Test search
+    assert cll.search(2) == True, f"Expected True but got {cll.search(2)}"
+    assert cll.search(3) == False, f"Expected False but got {cll.search(3)}"
+    
+    print("All test cases pass")
+
+# Run test cases
+test_circular_linked_list()
