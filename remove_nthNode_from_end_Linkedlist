@@ -1,0 +1,60 @@
+#Problem 4: Remove N-th Node from End of List
+
+
+class Node:
+    def __init__(self, value=0, next=None):
+        self.value = value
+        self.next = next
+
+def remove_nth_from_end(head, n):
+    dummy = fast = slow = Node(0, next=head)
+    for _ in range(n):
+        fast = fast.next
+    while fast.next:
+        fast = fast.next
+        slow = slow.next
+    slow.next = slow.next.next
+    return dummy.next
+
+def build_linked_list(values):
+    if not values:
+        return None
+    head = Node(values[0])
+    current = head
+    for value in values[1:]:
+        current.next = Node(value)
+        current = current.next
+    return head
+
+def print_linked_list(head):
+    values = []
+    current = head
+    while current:
+        values.append(current.value)
+        current = current.next
+    print(" -> ".join(map(str, values)))
+
+# Test cases
+def test_remove_nth_from_end():
+    test_cases = [
+        ([1, 2, 3, 4, 5], 2),   # Remove 2nd from end, expected output: [1, 2, 3, 5]
+        ([1], 1),                # Remove 1st from end, expected output: []
+        ([1, 2], 1),             # Remove 1st from end, expected output: [1]
+        ([1, 2], 2),             # Remove 2nd from end, expected output: [2]
+    ]
+    
+    for values, n in test_cases:
+        print(f"Original list: {values}")
+        head = build_linked_list(values)
+        print("Before:")
+        print_linked_list(head)
+        new_head = remove_nth_from_end(head, n)
+        print(f"After removing {n}th from end:")
+        print_linked_list(new_head)
+        print("-" * 30)
+
+test_remove_nth_from_end()
+
+            
+
+        
