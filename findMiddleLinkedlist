@@ -1,0 +1,38 @@
+#Find the middle of a linkedlist
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class linkedlist:
+    def __init__(self):
+        self.head = None
+    
+    def pushNode(self, data_val):
+        new_node = Node(data_val)
+        new_node.next = self.head
+        self.head = new_node
+
+    def findMiddle(self):
+        if self.head is None:
+            return None
+        slow = self.head
+        fast = self.head
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
+# Create the linked list and add nodes
+ll = linkedlist()
+for i in range(10, 0, -1):
+    ll.pushNode(i)
+
+# Find and print the middle value
+middle_node = ll.findMiddle()
+if middle_node:
+    print("Middle value is:", middle_node.data)
+else:
+    print("The linked list is empty.")
