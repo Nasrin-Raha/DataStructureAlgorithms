@@ -1,0 +1,63 @@
+#Implementing queue using linkedlist
+
+
+def Enqueue(self, item):
+    if self.isFull():
+        print("Full")
+        return
+    self.rear = (self.rear + 1) % (self.capacity)
+    self.Q[self.rear] == item
+    self.size = self.size + 1 
+    print("% s enqueued to queue" % str(item))
+    
+    
+def Dequeue(self):
+    if self.isEmpty():
+        print("Queue is empty")
+        return
+    print("% s dequeued from queue" % str(self.Q[self.front]))
+    self.front = (self.front + 1) % (self.capacity)
+    self.size = self.size -1
+    
+    
+def queueFront(self):
+    if self.isEmpty():
+        return "Queue is empty"
+    return self.Q[self.front]
+    
+def rear(queue):
+    if queue.empty():
+        print("Queue is empty.")
+        return None
+    rear_element = None
+    while not queue.empty():
+        rear_element = queue.get()
+        
+    return rear_element
+    
+    
+def isEmpty(self):
+    self.size == 0
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
