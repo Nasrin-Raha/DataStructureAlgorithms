@@ -1,0 +1,51 @@
+class ArrayQueue:
+    def __init__(self, size):
+        self.N = size
+        self.queue = [None] * self.N
+        self.front = -1
+        self.rear = -1
+
+    def enqueue(self, x):
+        if self.rear == self.N - 1:
+            print("Overflow")
+        elif self.front == -1 and self.rear == -1:
+            self.front = self.rear = 0
+            self.queue[self.rear] = x
+        else:
+            self.rear += 1
+            self.queue[self.rear] = x
+
+    def dequeue(self):
+        if self.front == -1 and self.rear == -1:
+            print("Underflow")
+        elif self.front == self.rear:
+            print(self.queue[self.front])
+            self.front = self.rear = -1
+        else:
+            print(self.queue[self.front])
+            self.front += 1
+
+    def display(self):
+        if self.front == -1 and self.rear == -1:
+            print("Underflow")
+        else:
+            for i in range(self.front, self.rear + 1):
+                print(self.queue[i])
+
+    def peek(self):
+        if self.front == -1 and self.rear == -1:
+            print("Underflow")
+        else:
+            print(self.queue[self.front])
+
+# Driver code
+q = ArrayQueue(5)
+
+q.enqueue(2)
+q.enqueue(3)
+q.enqueue(4)
+q.display()
+q.peek()
+q.dequeue()
+q.peek()
+q.display()
