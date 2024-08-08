@@ -1,0 +1,47 @@
+# Example: Hashing for Indexing and Caching
+# create a basic hash-based index to store and retrieve user records efficiently.
+
+
+
+class SimpleDatabase:
+    def __init__(self):
+        self.data = {}  # Hash table for storing records
+        self.index = {} # Hash table for indexing records by ID
+
+    def add_record(self, record_id, record_data):
+        # Store the record in the data hash table
+        self.data[record_id] = record_data
+        
+        # Create an index for fast lookup
+        hash_key = hash(record_id)  # Hash the record ID for indexing
+        self.index[hash_key] = record_id
+
+    def get_record(self, record_id):
+        # Retrieve the record using the index
+        hash_key = hash(record_id)
+        if hash_key in self.index:
+            actual_id = self.index[hash_key]
+            return self.data.get(actual_id, None)
+        return None
+
+    def remove_record(self, record_id):
+        # Remove the record and index entry
+        hash_key = hash(record_id)
+        if hash_key in self.index:
+            actual_id = self.index.pop(hash_key)
+            self.data.pop(actual_id, None)
+
+# Example usage
+db = SimpleDatabase()
+
+# Add records
+db.add_record("user123", {"name": "Alice", "age": 30})
+db.add_record("user456", {"name": "Bob", "age": 25})
+
+# Retrieve records
+print(db.get_record("user123"))  # Output: {'name': 'Alice', 'age': 30}
+print(db.get_record("user456"))  # Output: {'name': 'Bob', 'age': 25}
+
+# Remove a record
+db.remove_record("user123")
+print(db.get_record("user123"))  # Output: None
