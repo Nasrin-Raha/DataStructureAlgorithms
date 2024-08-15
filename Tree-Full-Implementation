@@ -1,0 +1,163 @@
+# Tree implementation
+
+
+class Node:
+    def __init__(self, value):
+        self.left = None
+        self.right = None
+        self.data = value
+        
+class Tree:
+    def createNode(self, data):
+        return Node(data)
+        
+    def insert(self, node, data):
+        if node is None:
+            return self.createNode(data)
+        if data < node.data:
+            node.left = self.insert(node.left, data)
+        else:
+            node.right = self.insert(node.right, data)
+        return node
+        
+    # Inorder traversal is like left root right for each step
+        
+    def traverse_Inorder(self, root):
+        if root is not None:
+            self.traverse_Inorder(root.left)
+            print(root.data)
+            self.traverse_Inorder(root.right)
+            
+    def preOrder(self, root):
+        if root is not None:
+            print(root.data)
+            self.preOrder(root.left)
+            self.preOrder(root.right)
+            
+            
+    def postOrder(self, root):
+        if root is not None:
+            self.postOrder(root.left)
+            self.postOrder(root.right)
+            print(root.data)
+            
+    def hieght(self, root):
+        if root is None:
+            return -1
+        return max(self.hieght(root.left), self.hieght(root.right)) + 1
+        
+        
+    def levelOrder(self, root):
+        queue = []
+        queue.append(root)
+        
+        while len(queue) != 0:
+            root = queue.pop(0)
+            print(root.data, end = ' ')
+            
+            if root.left is not None:
+                queue.append(root.left)
+                
+            if root.right is not None:
+                queue.append(root.right)
+                
+                
+                
+    def topView(root):
+        
+        q = []
+        d = dict()
+        root.level = 0
+        q.append(root)
+        
+        while len(q) != 0:
+            root = q.pop(0)
+            
+            if root.level not in d:
+                d[root.level] = root.data
+                
+            if root.left is not None:
+                q.append(root.left)
+                root.left.level = root.level - 1
+            if root.right is not None:
+                q.append(root.right)
+                root.right.level = root.level + 1
+                
+        for i in sorted(d):
+            print(d[i], end = ' ')
+            
+            
+    
+    def checkBST(root):
+        
+        def In_Order(root, values):
+            if root is None:
+                return
+            
+            In_Order(root.left, values)
+            values.append(root.data)
+            In_Order(root.right, values)
+            
+        
+        values = []
+        In_Order(root, values)
+        
+        for i in range(len(values) - 1):
+            
+            if values[i] >= values[i+1]:
+                return False
+                
+        return True
+        
+        
+        
+        
+        left_part = -999999
+        right_part = 999999
+    def checkBSTrecursive(root, left_part, right_part):
+        if root is None:
+            return True
+            
+        if root.data <= left_part or root.data >= right_part:
+            return False
+            
+        return checkBSTrecursive(root.left, left_part, root.data) and checkBSTrecursive(root.right, root.data, right_part)
+        
+    return checkBSTrecursive(root, left_part, right_part)
+        
+        
+        
+# Driver createNode
+
+tree = Tree()
+root = tree.createNode(5)
+print(root.data)
+
+tree.insert(root, 2)
+tree.insert(root, 10)
+tree.insert(root, 7)
+tree.insert(root, 15)
+tree.insert(root, 12)
+tree.insert(root, 20)
+tree.insert(root, 30)
+tree.insert(root, 6)
+tree.insert(root, 8)
+
+print('Inorder----->')
+r=tree.traverse_Inorder(root)
+
+print('PreOrder----->')
+r = tree.preOrder(root)
+
+print('PostOrder----->')
+r = tree.postOrder(root)
+
+
+print('Height----->')
+print(tree.hieght(root))
+
+print('LevelOrder----->')
+print(tree.levelOrder(root))
+
+print('TopView----->')
+print(tree.topView())
